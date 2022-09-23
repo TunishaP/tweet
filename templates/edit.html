@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<section class="content">
+    <div class="main">
+        <div class="main-header">
+    <a href="/">
+        <img class="logo" src="/static/img/techis-logo.png" alt="White twitter logo">
+        </a>
+    <h1>Edit</h1>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <section class="tweet_tweetme2">
+    <form action="/edit/{{tweet.id}}/" method='POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <input class="name-input" type="text" name="name" placeholder="Name" value="{{tweet.name}}" required />
+        <textarea name="body" placeholder="What's Happening?" required>{{tweet.body}}</textarea>
+        <label for={{tweet.name}}></label>
+            <input type="file" name="image">  
+        {% if tweet.image.url %}
+        <img class="tweet-img"src="{{ tweet.image.url}}" style="width: 100%;"/>
+        {% endif %}
+    <div class="update-edit-buttons">
+        <a class="cancel-anchor" href="/">
+            <input class="cancel-button" type='button' id='delete' value="Cancel">
+        </a>
+        <input id="update-button" type='submit' value="Update">
+    </div>
+    </form> 
+</section>
+</section>
+{% endblock %}

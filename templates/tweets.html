@@ -1,0 +1,87 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<section class="content">
+  <section class="main">
+    <div class="main-header">
+        <img src="{% static 'img/techis-logo.png' %}" class="logo" />
+        <h1>HOME</h1>
+    </div>
+    
+  </section>
+  <section class="tweet_tweetme2">
+    <form action="/" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="img">
+        <img src="{% static 'img/cacti.jpeg' %}" />
+      </div>
+      <div class="data_body">
+        <input
+          type="text"
+          name="name"
+          placeholder="Your name"
+          style="background-color: #e6fef7"
+          required
+        />
+        <textarea
+          name="body"
+          placeholder="What's happening?"
+          required
+        ></textarea>
+
+        <div class="file-submit">
+            <div class="file">
+                <input class="form-control form-control-sm" type="file" name="image"/>
+            </div>
+          
+          <input class="submit" type="submit" value="Tweet" />
+        </div>
+        
+      </div>
+    </form>
+  </section>
+  <div class="space"></div>
+  <section class="tweets">
+    <ul>
+      {% for tweet in tweets %}
+
+        <li>
+            <img class="menu_icon js-menu-icon" src="{% static 'img/menu.png' %}" />
+            <div class="menu">
+                <a href="/edit/{{ tweet.id }}">Edit</a>
+                <br>
+                <a href="/delete/{{ tweet.id }}">Delete</a>
+            </div>
+            <div class="logo">
+                <img src="{% static 'img/profile-user.png' %}" alt="" />
+            </div>
+            <div class="name_body">
+                <div class="name">{{ tweet.name }}</div>
+                <div class="datetime">{{ tweet.created_at }}</div>
+                <p>{{ tweet.body }}</p>
+                {% if tweet.image %}
+                    <img class="tweet-img" src="{{ tweet.image.url }}" style="width: 100%;" />
+                {% endif %}
+                
+                <div class="icon-list">
+                    <form id="likes-form" action="{% url 'like_tweet' tweet.pk %}" method='POST'>
+                        {% csrf_token %}
+                    <button class="like-button" type="submit"  name="tweet_id" value="{{ tweet.id }}">
+                    &#10084;
+                    </button>
+                    {{tweet.likes}}
+                </form> 
+            </div>
+        </li>
+      
+      {% endfor %}
+    </ul>
+  </section>
+  <script
+    src="https://code.jquery.com/jquery-3.6.1.js"
+    integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"
+  ></script>
+  <script src="{% static 'js/tweets.js' %}"></script>
+</section>
+
+{% endblock %}
